@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard</title>
+    <style>
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid black; padding: 10px; }
+    </style>
+</head>
+<body>
+
+<h1>Admin Dashboard</h1>
+
+<button onclick="loadUsers()">Users</button>
+<button onclick="loadProducts()">Products</button>
+<button onclick="loadOrders()">Orders</button>
+
+<table id="table"></table>
+
+<script>
+
+    const API = "http://localhost:8080/api/admin";
+
+    function render(data){
+
+        let html = "<tr>";
+
+        Object.keys(data[0]).forEach(k=>{
+            html += "<th>"+k+"</th>";
+        });
+
+        html += "</tr>";
+
+        data.forEach(item=>{
+            html += "<tr>";
+            Object.values(item).forEach(v=>{
+                html += "<td>"+v+"</td>";
+            });
+            html += "</tr>";
+        });
+
+        document.getElementById("table").innerHTML = html;
+    }
+
+    async function loadUsers(){
+        const res = await fetch(API+"/users");
+        render(await res.json());
+    }
+
+    async function loadProducts(){
+        const res = await fetch(API+"/products");
+        render(await res.json());
+    }
+
+    async function loadOrders(){
+        const res = await fetch(API+"/orders");
+        render(await res.json());
+    }
+
+</script>
+
+</body>
+</html>
